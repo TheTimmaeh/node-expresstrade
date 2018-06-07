@@ -15,7 +15,7 @@ npm install expresstrade --save
 # Usage
 
 ```javascript
-var ExpressTrade = require('./lib/expresstrade.js')
+var ExpressTrade = require('expresstrade')
 
 var ET = new ExpressTrade({
   apiurl: 'https://api-trade.opskins.com/%s/%s/v1/',
