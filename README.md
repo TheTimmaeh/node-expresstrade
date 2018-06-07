@@ -8,7 +8,7 @@ All you need to run a bot is your API key and the secret of your 2FA registered 
 # Installation
 
 ```shell
-npm install expresstrade --save
+npm i expresstrade --save
 ```
 
 
@@ -18,9 +18,9 @@ npm install expresstrade --save
 var ExpressTrade = require('expresstrade')
 
 var ET = new ExpressTrade({
-  apiurl: 'https://api-trade.opskins.com/%s/%s/v1/',
   apikey: 'Your OPSkins API Key',
-  twofactorsecret: 'Your OPSkins 2FA Secret'
+  twofactorsecret: 'Your OPSkins 2FA Secret',
+  pollInterval: 5000
 })
 
 ET.IUser.GetInventory((err, body) => {
@@ -29,6 +29,12 @@ ET.IUser.GetInventory((err, body) => {
 
 ET.ITrade.SendOfferToSteamId({steam_id: '76561197982275081', items: '1234,5678'}, (err, body) => {
   // ...
+})
+
+ET.on('offerReceived', (_event, _offer) => {
+  console.log(_event, _offer.id)
+
+  ET.ITrade.CancelOffer({offer_id: _offer.id})
 })
 ```
 
@@ -52,8 +58,69 @@ ET.request('IUser/GetInventory', ((err, body) => {
 ```
 
 
-## Methods (GET/POST)
+## Request Methods (GET/POST)
 
-The required methods are saved in the API schema and ExpressTrade handles the conversion for GET (query string) and POST (form) on its own.
+The required methods are saved in the API schema and node-expreesstrade handles the conversion for GET (query string) and POST (form) on its own.
 
-ExpressTrade accepts any JSON object containin the data.
+node-expreesstrade accepts any JSON object containin the data.
+
+
+# Events
+
+If `pollInterval` is set, node-expreesstrade will poll for changes. If any new or changed offers are detected, an event will be emitted.
+
+### any
+
+* `event` - The event type
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted on any event.
+
+
+### offerSent
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer has been sent out. The offer is active and the recipient can accept it to exchange the items.
+
+
+### offerReceived
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer was received. The offer is active and you can accept it to exchange the items.
+
+
+### offerAccepted
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer has been accepted. The recipient accepted the offer and items were exchanged.
+
+
+### offerExpired
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer has expired. The offer expired from inactivity.
+
+
+### offerCancelled
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer was cancelled. The sender cancelled the offer.
+
+
+### offerDeclined
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer has been declined. The recipient declined the offer.
+
+
+### offerNoLongerValid
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer is no longer valid. One of the items in the offer is no longer available/eligible so the offer was cancelled automatically.

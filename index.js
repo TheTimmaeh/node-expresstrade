@@ -1,5 +1,6 @@
 var twoFactor = require('node-2fa')
 var request = require('request')
+var events = require('events')
 var util = require('util')
 var querystring = require('querystring')
 
@@ -15,10 +16,6 @@ var ExpressTrade = (() => {
       console.log('Options missing.')
       return
     }
-    if(typeof options.apiurl === 'undefined'){
-      console.log('API URL missing.')
-      return
-    }
     if(typeof options.apikey === 'undefined'){
       console.log('API Key missing.')
       return
@@ -28,16 +25,95 @@ var ExpressTrade = (() => {
       return
     }
 
-    this.options = options
+    // Options
+    this.options = Object.assign({
+      apiurl: 'https://api-trade.opskins.com/%s/%s/v1/',
+      pollInterval: -1
+    }, options)
 
     // API Schema
     this.schema = schema
 
-    for(var _interface in schema){
+    for(let _interface in schema){
       this[_interface] = {}
-      for(var _method in schema[_interface]) this[_interface][_method] = (_data, _callback) => {
+      for(let _method in schema[_interface]) this[_interface][_method] = (_data, _callback) => {
         this.request([_interface, _method].join('/'), _data, _callback)
       }
+    }
+
+    // Broadcast Events
+    function broadcast(_event, _offer){
+      that.emit(_event, _offer)
+      that.emit('any', _event, _offer)
+    }
+
+    // Events
+    if(options.pollInterval > -1){
+      this.pollData = {}
+      var that = this
+      startPolling(options.pollInterval)
+    }
+
+    // Start Polling
+    function startPolling(_interval){
+
+      // Apply min Interval Time
+      if(_interval < 1000) _interval = 1000
+
+      that.polling = setInterval(() => {
+        that.ITrade.GetOffers((err, res) => {
+          if(err){
+            console.log(err)
+            return
+          }
+
+          if(res.status){
+            var _pollData = {}
+
+            // First time filling pollData
+            if(Object.keys(that.pollData).length < 1){
+              for(var offer in res.response.offers) _pollData[res.response.offers[offer].id] = res.response.offers[offer]
+              that.pollData = Object.assign({}, _pollData)
+              return
+            }
+
+            // Compare old to new pollData
+            for(var offer in res.response.offers){
+              _pollData[res.response.offers[offer].id] = res.response.offers[offer]
+
+              // New Offer
+              if(typeof that.pollData[res.response.offers[offer].id] === 'undefined'){
+                if(res.response.offers[offer].sent_by_you) broadcast('offerSent', res.response.offers[offer])
+                else broadcast('offerReceived', res.response.offers[offer])
+
+              // Existing Offer, different State
+              } else if(that.pollData[res.response.offers[offer].id].state !== res.response.offers[offer].state){
+
+                switch(res.response.offers[offer].state){
+                  case 3:
+                    broadcast('offerAccepted', res.response.offers[offer])
+                    break
+                  case 5:
+                    broadcast('offerExpired', res.response.offers[offer])
+                    break
+                  case 6:
+                    broadcast('offerCancelled', res.response.offers[offer])
+                    break
+                  case 7:
+                    broadcast('offerDeclined', res.response.offers[offer])
+                    break
+                  case 8:
+                    broadcast('offerNoLongerValid', res.response.offers[offer])
+                    break
+                }
+              }
+            }
+
+            // Save new pollData
+            that.pollData = Object.assign({}, _pollData)
+          }
+        })
+      }, _interval)
     }
 
     // API Request Function
@@ -125,4 +201,5 @@ var ExpressTrade = (() => {
 
 })()
 
+ExpressTrade.prototype = new events.EventEmitter
 module.exports = ExpressTrade
