@@ -23,11 +23,37 @@ var ET = new ExpressTrade({
   twofactorsecret: 'Your OPSkins 2FA Secret'
 })
 
-ET.request('IUser/GetInventory', (err, body) => {
+ET.IUser.GetInventory((err, body) => {
   // ...
 })
 
-ET.request('ITrade/SendOfferToSteamId', {steam_id: '76561197982275081', items: '1234,5678'}, (err, body) => {
+ET.ITrade.SendOfferToSteamId({steam_id: '76561197982275081', items: '1234,5678'}, (err, body) => {
   // ...
 })
 ```
+
+
+## Syntax
+
+You can either address the methods as object properties like this:
+
+```javascript
+ET.IUser.GetInventory((err, body) => {
+  // ...
+})
+```
+
+or address the path like this:
+
+```javascript
+ET.request('IUser/GetInventory', ((err, body) => {
+  // ...
+})
+```
+
+
+## Methods (GET/POST)
+
+The required methods are saved in the API schema and ExpressTrade handles the conversion for GET (query string) and POST (form) on its own.
+
+ExpressTrade accepts any JSON object containin the data.
