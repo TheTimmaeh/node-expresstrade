@@ -1,0 +1,33 @@
+{
+  "name": "expresstrade",
+  "version": "0.0.1",
+  "description": "Interact with the OPSkins ExpressTrade API from Node.js",
+  "keywords": [
+    "steam",
+    "community",
+    "opskins",
+    "express",
+    "trade"
+  ],
+  "homepage": "https://github.com/TheTimmaeh/node-expresstrade",
+  "bugs": {
+    "url": "https://github.com/TheTimmaeh/node-expresstrade/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Tim Elbert",
+    "email": "mail@thetimmaeh.com",
+    "url": "https://thetimmaeh.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheTimmaeh/node-expresstrade/issues"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "node-2fa": "^1.1.2",
+    "querystring": "^0.2.0",
+    "request": "^2.87.0",
+    "util": "^0.10.4"
+  }
+}
