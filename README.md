@@ -8,7 +8,7 @@ All you need to run a bot is your API key and the secret of your 2FA registered 
 # Installation
 
 ```shell
-npm install @thetimmaeh/expresstrade --save
+npm install expresstrade --save
 ```
 
 
