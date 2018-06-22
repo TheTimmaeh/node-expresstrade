@@ -1,7 +1,6 @@
 var schema = {
   IItem: {
     GetItemsById: {
-      method: 'POST',
       fields: {
         item_id: 1
       }
@@ -121,6 +120,14 @@ var schema = {
     GetProfile: {
       fields: {
         with_extra: 0
+      }
+    },
+    UpdateProfile: {
+      method: 'POST',
+      fields: {
+        display_name: 1,
+        inventory_is_private: 1,
+        allow_twofactor_code_reuse: 1
       }
     }
   }

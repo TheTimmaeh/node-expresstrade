@@ -60,14 +60,14 @@ ET.request('IUser/GetInventory', ((err, body) => {
 
 ## Request Methods (GET/POST)
 
-The required methods are saved in the API schema and node-expreesstrade handles the conversion for GET (query string) and POST (form) on its own.
+The required methods are saved in the API schema and node-expresstrade handles the conversion for GET (query string) and POST (form) on its own.
 
-node-expreesstrade accepts any JSON object containin the data.
+node-expresstrade accepts any JSON object containin the data.
 
 
 # Events
 
-If `pollInterval` is set, node-expreesstrade will poll for changes. If any new or changed offers are detected, an event will be emitted.
+If `pollInterval` is set, node-expresstrade will poll for changes. If any new or changed offers are detected, an event will be emitted.
 
 ### any
 
