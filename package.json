@@ -1,6 +1,6 @@
 {
   "name": "expresstrade",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Interact with the OPSkins ExpressTrade API from Node.js",
   "keywords": [
     "steam",

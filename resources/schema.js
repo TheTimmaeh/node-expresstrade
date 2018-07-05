@@ -74,6 +74,9 @@ var schema = {
         page: 0,
         per_page: 0,
         ids: 0
+      },
+      data: {
+        per_page: 100
       }
     },
     GetTradeURL: {},
@@ -84,6 +87,10 @@ var schema = {
         page: 0,
         per_page: 0,
         search: 0
+      },
+      data: {
+        app_id: 1,
+        per_page: 100
       }
     },
     GetUserInventoryFromSteamId: {
@@ -93,6 +100,10 @@ var schema = {
         page: 0,
         per_page: 0,
         search: 0
+      },
+      data: {
+        app_id: 1,
+        per_page: 100
       }
     },
     AcceptOffer: {
@@ -147,7 +158,7 @@ var schema = {
         sort: 0
       },
       data: {
-        app_id: 2,
+        app_id: 1,
         per_page: 100,
         sort: 1
       }

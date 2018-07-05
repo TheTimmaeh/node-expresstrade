@@ -1,8 +1,8 @@
-var twoFactor = require('node-2fa')
-var request = require('request')
-var events = require('events')
-var util = require('util')
-var querystring = require('querystring')
+const twoFactor = require('node-2fa'),
+      request = require('request'),
+      events = require('events'),
+      util = require('util'),
+      querystring = require('querystring')
 
 var schema = require('./resources/schema')
 

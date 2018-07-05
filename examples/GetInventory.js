@@ -9,7 +9,7 @@ var ET = new ExpressTrade({
   twofactorsecret: 'Your 2FA Secret'
 })
 
-ET.IUser.GetInventory((err, res) => {
+ET.IUser.GetInventory({app_id: 1}, (err, res) => {
   console.log(err, res)
 })
 
@@ -17,6 +17,6 @@ ET.IUser.GetInventory((err, res) => {
 // Also available via ET.request:
 //
 
-ET.request('IUser/GetInventory', (err, res) => {
+ET.request('IUser/GetInventory', {app_id: 1}, (err, res) => {
   console.log(err, res)
 })
