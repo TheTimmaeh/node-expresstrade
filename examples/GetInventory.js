@@ -10,7 +10,7 @@ var ET = new ExpressTrade({
 })
 
 ET.IUser.GetInventory((err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })
 
 //
@@ -18,5 +18,5 @@ ET.IUser.GetInventory((err, res) => {
 //
 
 ET.request('IUser/GetInventory', (err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })

@@ -10,7 +10,7 @@ var ET = new ExpressTrade({
 })
 
 ET.ITrade.SendOfferToSteamId({steam_id: '76561197982275081', items: '1234'}, (err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })
 
 //
@@ -18,5 +18,5 @@ ET.ITrade.SendOfferToSteamId({steam_id: '76561197982275081', items: '1234'}, (er
 //
 
 ET.request('ITrade/SendOfferToSteamId', {steam_id: '76561197982275081', items: '1234'}, (err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })

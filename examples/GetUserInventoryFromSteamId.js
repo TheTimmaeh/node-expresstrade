@@ -10,7 +10,7 @@ var ET = new ExpressTrade({
 })
 
 ET.ITrade.GetUserInventoryFromSteamId({steam_id: '76561197982275081'}, (err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })
 
 //
@@ -18,5 +18,5 @@ ET.ITrade.GetUserInventoryFromSteamId({steam_id: '76561197982275081'}, (err, res
 //
 
 ET.request('ITrade/GetUserInventoryFromSteamId', {steam_id: '76561197982275081'}, (err, res) => {
-  console.log(err, res);
+  console.log(err, res)
 })

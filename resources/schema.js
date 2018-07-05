@@ -1,5 +1,52 @@
 var schema = {
+  ICase: {
+    GetCaseSchema: {
+      fields: {
+        cases: 0
+      }
+    },
+    GetMinimumOpenVolume: {},
+    OpenWithKeys: {
+      method: 'POST',
+      fields: {
+        case_id: 1,
+        amount: 0
+      }
+    }
+  },
+  ICaseSite: {
+    GetKeyCount: {
+      fields: {
+        steam_id: 0,
+        trade_url: 0
+      }
+    },
+    GetTradeStatus: {
+      fields: {
+        offer_id: 1
+      }
+    },
+    SendKeyRequest: {
+      method: 'POST',
+      fields: {
+        steam_id: 0,
+        trade_url: 0,
+        case_id: 1,
+        affiliate_eth_address: 1,
+        amount: 0
+      }
+    }
+  },
+  IEthereum: {
+    GetContractAddress: {}
+  },
   IItem: {
+    GetItems: {
+      fields: {
+        sku_filter: 0,
+        '--wear_tier_index': 0
+      }
+    },
     GetItemsById: {
       fields: {
         item_id: 1
@@ -9,26 +56,6 @@ var schema = {
       method: 'POST',
       fields: {
         item_id: 1
-      }
-    }
-  },
-  ITest: {
-    Test: {
-      callback: (error, response, body) => {
-        console.log(error, body)
-      }
-    },
-    TestAuthed: {
-      callback: (error, response, body) => {
-        console.log(error, body)
-      }
-    },
-    TestBody: {
-      data: {
-        foo: 'bar'
-      },
-      callback: (error, response, body) => {
-        console.log(error, body)
       }
     }
   },
@@ -90,7 +117,8 @@ var schema = {
         twofactor_code: 1,
         uid: 1,
         token: 1,
-        items: 1
+        items: 1,
+        message: 0
       }
     },
     SendOfferToSteamId: {
@@ -103,6 +131,13 @@ var schema = {
     }
   },
   IUser: {
+    CreateVCaseUser: {
+      method: 'POST',
+      fields: {
+        site_url: 1,
+        display_name: 1
+      }
+    },
     GetInventory: {
       fields: {
         app_id: 1,
