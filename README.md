@@ -124,3 +124,24 @@ Emitted when an offer has been declined. The recipient declined the offer.
 * `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
 
 Emitted when an offer is no longer valid. One of the items in the offer is no longer available/eligible so the offer was cancelled automatically.
+
+
+### caseOpenPending
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer has a pending case opening. The trade offer was initiated by a VCase site and it's awaiting ETC confirmations. The vKeys have been removed from the user iventory but may be restored on error later.
+
+
+### caseOpenExpired
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer for a case opening has expired. The trade offer was initiated by a VCase site and there was an error opening the case due to backend issues. No items should have been exchanged.
+
+
+### caseOpenFailed
+
+* `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
+
+Emitted when an offer for a case opening failed. The trade offer was initiated by a VCase site and VGO was unable to generate items on the blockchain, so the vKeys have been refunded.

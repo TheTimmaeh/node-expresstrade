@@ -105,6 +105,15 @@ var ExpressTrade = (() => {
                   case 8:
                     broadcast('offerNoLongerValid', res.response.offers[offer])
                     break
+                  case 9:
+                    broadcast('caseOpenPending', res.response.offers[offer])
+                    break
+                  case 10:
+                    broadcast('caseOpenExpired', res.response.offers[offer])
+                    break
+                  case 12:
+                    broadcast('caseOpenFailed', res.response.offers[offer])
+                    break
                 }
               }
             }
