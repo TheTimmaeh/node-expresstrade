@@ -16,12 +16,9 @@ var ExpressTrade = (() => {
       console.log('Options missing.')
       return
     }
-    if(typeof options.apikey === 'undefined'){
+
+    if(!options.apikey){
       console.log('API Key missing.')
-      return
-    }
-    if(typeof options.twofactorsecret === 'undefined'){
-      console.log('Two Factor Secret missing.')
       return
     }
 
@@ -82,7 +79,7 @@ var ExpressTrade = (() => {
               _pollData[res.response.offers[offer].id] = res.response.offers[offer]
 
               // New Offer
-              if(typeof that.pollData[res.response.offers[offer].id] === 'undefined'){
+              if(!that.pollData[res.response.offers[offer].id]){
                 if(res.response.offers[offer].sent_by_you) broadcast('offerSent', res.response.offers[offer])
                 else broadcast('offerReceived', res.response.offers[offer])
 
@@ -132,7 +129,7 @@ var ExpressTrade = (() => {
       var [ _interface, _method ] = _path.split('/')
 
       // Check for Interface & Method
-      if(!_interface || !_method || typeof this.schema[_interface] === 'undefined' || typeof this.schema[_interface][_method] === 'undefined') return
+      if(!_interface || !_method || !this.schema[_interface] || !this.schema[_interface][_method]) return
 
       // Default Options for Requests
       var options = {
@@ -143,7 +140,7 @@ var ExpressTrade = (() => {
       }
 
       // Check for Method (GET/POST)
-      if(typeof this.schema[_interface][_method].method !== 'undefined') options.method = this.schema[_interface][_method].method
+      if(!!this.schema[_interface][_method].method) options.method = this.schema[_interface][_method].method
 
       // Create Data Object
       if(typeof _data === 'function') _callback = _data, _data = {}
@@ -157,7 +154,7 @@ var ExpressTrade = (() => {
         if(this.schema[_interface][_method].fields.twofactor_code === 1) data.twofactor_code = this.generateToken()
 
         // Stop Execution if required Data Field is missing
-        for(var field in this.schema[_interface][_method].fields) if(this.schema[_interface][_method].fields[field] === 1 && typeof data[field] === 'undefined'){
+        for(var field in this.schema[_interface][_method].fields) if(this.schema[_interface][_method].fields[field] === 1 && !data[field]){
           console.log('ExpressTrade ' + _path + ': Missing Input ' + field)
           return
         }
@@ -167,7 +164,7 @@ var ExpressTrade = (() => {
       if(Object.keys(data).length > 0){
 
         // Convert Data Object into GET format
-        if(typeof options.method === 'undefined' || options.method === 'GET') options.url = options.url + '?' + querystring.stringify(data)
+        if(!options.method || options.method === 'GET') options.url = options.url + '?' + querystring.stringify(data)
 
         // Convert Data Object into POST format
         else options.form = data
@@ -192,18 +189,22 @@ var ExpressTrade = (() => {
     // Generate 2FA Token
     this.generateToken = (i = 0) => {
 
-        if(i > 10){
-          console.log('Error: Could not generate valid token after 10 tries.')
-          return
-        }
-
-        var { token } = twoFactor.generateToken(this.options.twofactorsecret)
-        var { delta } = twoFactor.verifyToken(this.options.twofactorsecret, token)
-
-        if(delta == 0) return token
-        return this.generateToken(i++)
+      if(!this.options.twofactorsecret){
+        console.log('Two Factor Secret missing, aborting.')
+        return
       }
 
+      if(i > 10){
+        console.log('Error: Could not generate valid token after 10 tries.')
+        return
+      }
+
+      var { token } = twoFactor.generateToken(this.options.twofactorsecret)
+      var { delta } = twoFactor.verifyToken(this.options.twofactorsecret, token)
+
+      if(delta == 0) return token
+      return this.generateToken(i++)
+    }
   }
 
   return ExpressTrade

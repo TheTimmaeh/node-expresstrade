@@ -1,14 +1,16 @@
 {
   "name": "expresstrade",
-  "version": "0.1.7",
+  "version": "1.0.0",
   "description": "Interact with the OPSkins ExpressTrade API from Node.js",
   "keywords": [
     "steam",
     "community",
     "opskins",
+    "wax",
     "express",
     "trade",
     "api",
+    "vgo",
     "csgo",
     "skins"
   ],
