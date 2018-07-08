@@ -31,8 +31,8 @@ ET.ITrade.SendOfferToSteamId({steam_id: '76561197982275081', items: '1234,5678'}
   // ...
 })
 
-ET.on('offerReceived', (_event, _offer) => {
-  console.log(_event, _offer.id)
+ET.on('offerReceived', (_offer) => {
+  console.log(_offer.id)
 
   ET.ITrade.CancelOffer({offer_id: _offer.id})
 })
@@ -130,7 +130,7 @@ Emitted when an offer is no longer valid. One of the items in the offer is no lo
 
 * `offer` - A [Standard Trade Offer Object](https://github.com/OPSkins/trade-opskins-api/blob/master/ITrade.md#standard-trade-offer-object)
 
-Emitted when an offer has a pending case opening. The trade offer was initiated by a VCase site and it's awaiting ETC confirmations. The vKeys have been removed from the user iventory but may be restored on error later.
+Emitted when an offer has a pending case opening. The trade offer was initiated by a VCase site and it's awaiting ETH confirmations. The vKeys have been removed from the user iventory but may be restored on error later.
 
 
 ### caseOpenExpired

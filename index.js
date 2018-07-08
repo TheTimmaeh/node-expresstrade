@@ -13,12 +13,12 @@ var ExpressTrade = (() => {
 
     // Check for Options
     if(typeof options !== 'object'){
-      console.log('Options missing.')
+      console.log('expresstrade | Options missing.')
       return
     }
 
     if(!options.apikey){
-      console.log('API Key missing.')
+      console.log('expresstrade | API Key missing.')
       return
     }
 
@@ -71,6 +71,12 @@ var ExpressTrade = (() => {
             if(Object.keys(that.pollData).length < 1){
               for(var offer in res.response.offers) _pollData[res.response.offers[offer].id] = res.response.offers[offer]
               that.pollData = Object.assign({}, _pollData)
+              return
+            }
+
+            // No valid response
+            if(!res.response || !res.response.offers){
+              console.log('expresstrade | Couldnt poll for offers, maybe using vCaseSite API key?')
               return
             }
 
@@ -155,7 +161,7 @@ var ExpressTrade = (() => {
 
         // Stop Execution if required Data Field is missing
         for(var field in this.schema[_interface][_method].fields) if(this.schema[_interface][_method].fields[field] === 1 && !data[field]){
-          console.log('ExpressTrade ' + _path + ': Missing Input ' + field)
+          console.log('expresstrade | ' + _path + ': Missing Input ' + field)
           return
         }
       }
@@ -190,12 +196,12 @@ var ExpressTrade = (() => {
     this.generateToken = (i = 0) => {
 
       if(!this.options.twofactorsecret){
-        console.log('Two Factor Secret missing, aborting.')
+        console.log('expresstrade | Two Factor Secret missing, aborting.')
         return
       }
 
       if(i > 10){
-        console.log('Error: Could not generate valid token after 10 tries.')
+        console.log('expresstrade | Error: Could not generate valid token after 10 tries.')
         return
       }
 
