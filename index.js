@@ -64,19 +64,17 @@ var ExpressTrade = (() => {
             return
           }
 
-          if(res.status){
+          // Check for bad status
+          if(res.status && res.status != 1){
+            console.log('expresstrade | ' + res.status + ': ' + res.message)
+            clearInterval(that.polling)
+          } else {
             var _pollData = {}
 
             // First time filling pollData
             if(Object.keys(that.pollData).length < 1){
               for(var offer in res.response.offers) _pollData[res.response.offers[offer].id] = res.response.offers[offer]
               that.pollData = Object.assign({}, _pollData)
-              return
-            }
-
-            // No valid response
-            if(!res.response || !res.response.offers){
-              console.log('expresstrade | Couldnt poll for offers, maybe using vCaseSite API key?')
               return
             }
 

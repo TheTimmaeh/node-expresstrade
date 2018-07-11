@@ -137,7 +137,8 @@ var schema = {
       fields: {
         twofactor_code: 1,
         steam_id: 1,
-        items: 1
+        items: 1,
+        message: 0
       }
     }
   },
