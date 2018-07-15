@@ -33,7 +33,16 @@ var schema = {
         trade_url: 0,
         case_id: 1,
         affiliate_eth_address: 1,
-        amount: 0
+        amount: 0,
+        referral_uid: 0
+      }
+    },
+    UpdateCommissionSettings: {
+      method: 'POST',
+      fields: {
+        network_id: 1,
+        network_user_id: 1,
+        referral_commission_rate: 0
       }
     }
   },
