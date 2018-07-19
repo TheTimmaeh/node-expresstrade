@@ -53,7 +53,7 @@ var schema = {
     GetItems: {
       fields: {
         sku_filter: 0,
-        '--wear_tier_index': 0
+        wear_tier_index: 0
       }
     },
     GetItemsById: {
@@ -82,7 +82,8 @@ var schema = {
         type: 0,
         page: 0,
         per_page: 0,
-        ids: 0
+        ids: 0,
+        sort: 0
       },
       data: {
         per_page: 100
