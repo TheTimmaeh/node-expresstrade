@@ -136,8 +136,9 @@ var schema = {
       method: 'POST',
       fields: {
         twofactor_code: 1,
-        uid: 1,
-        token: 1,
+        uid: 0,
+        token: 0,
+        trade_url: 0,
         items: 1,
         message: 0
       }

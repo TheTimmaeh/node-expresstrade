@@ -68,6 +68,9 @@ var ExpressTrade = (() => {
           if(res.status && res.status != 1){
             console.log('expresstrade | ' + res.status + ': ' + res.message)
             clearInterval(that.polling)
+          } else if(!res.response || !res.response.offers){
+            console.log('expresstrade | Couldnt poll for offers, maybe using vCaseSite API key?')
+            return
           } else {
             var _pollData = {}
 
