@@ -139,7 +139,9 @@ var schema = {
         uid: 0,
         token: 0,
         trade_url: 0,
-        items: 1,
+        items: 0,
+        items_to_send: 0,
+        items_to_receive: 0,
         message: 0
       }
     },
@@ -148,7 +150,9 @@ var schema = {
       fields: {
         twofactor_code: 1,
         steam_id: 1,
-        items: 1,
+        items: 0,
+        items_to_send: 0,
+        items_to_receive: 0,
         message: 0
       }
     }
