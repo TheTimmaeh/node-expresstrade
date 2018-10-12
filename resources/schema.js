@@ -32,9 +32,9 @@ var schema = {
         steam_id: 0,
         trade_url: 0,
         case_id: 1,
-        affiliate_eth_address: 1,
         amount: 0,
-        referral_uid: 0
+        referral_uid: 0,
+        rebate_commission_rate: 0
       }
     },
     UpdateCommissionSettings: {
@@ -59,6 +59,12 @@ var schema = {
     GetItemsById: {
       fields: {
         item_id: 1
+      }
+    },
+    GetRarityStats: {
+      fields: {
+        app_id: 1,
+        def_id: 0
       }
     },
     WithdrawToOpskins: {
@@ -96,7 +102,8 @@ var schema = {
         app_id: 1,
         page: 0,
         per_page: 0,
-        search: 0
+        search: 0,
+        sort: 0
       },
       data: {
         app_id: 1,
@@ -109,7 +116,8 @@ var schema = {
         app_id: 1,
         page: 0,
         per_page: 0,
-        search: 0
+        search: 0,
+        sort: 0
       },
       data: {
         app_id: 1,
@@ -142,6 +150,7 @@ var schema = {
         items: 0,
         items_to_send: 0,
         items_to_receive: 0,
+        expiration_time: 0,
         message: 0
       }
     },
@@ -153,6 +162,7 @@ var schema = {
         items: 0,
         items_to_send: 0,
         items_to_receive: 0,
+        expiration_time: 0,
         message: 0
       }
     }
@@ -171,7 +181,8 @@ var schema = {
         page: 0,
         per_page: 0,
         search: 0,
-        sort: 0
+        sort: 0,
+        filter_in_trade: 0
       },
       data: {
         app_id: 1,
@@ -190,6 +201,14 @@ var schema = {
         display_name: 1,
         inventory_is_private: 1,
         allow_twofactor_code_reuse: 1
+      }
+    },
+    UserReports: {
+      method: 'POST',
+      fields: {
+        message: 1,
+        report_type: 1,
+        offer_id: 1
       }
     }
   }
