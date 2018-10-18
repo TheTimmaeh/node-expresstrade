@@ -50,6 +50,16 @@ var schema = {
     GetContractAddress: {}
   },
   IItem: {
+    GetAllItems: {
+      fields: {
+        app_id: 1,
+        sku: 0,
+        page: 0,
+        per_page: 0,
+        sort: 0,
+        no_exclusions: 0
+      }
+    },
     GetItems: {
       fields: {
         sku_filter: 0,
