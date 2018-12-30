@@ -60,6 +60,15 @@ var schema = {
         no_exclusions: 0
       }
     },
+    GetItemDefinitions: {
+      fields: {
+        app_id: 1,
+        def_id_filter: 0,
+        index_by: 0,
+        page: 0,
+        per_page: 0
+      }
+    },
     GetItems: {
       fields: {
         sku_filter: 0,
@@ -75,6 +84,13 @@ var schema = {
       fields: {
         app_id: 1,
         def_id: 0
+      }
+    },
+    InstantSellRecentItems: {
+      method: 'POST',
+      fields: {
+        item_id: 1,
+        instant_sell_type: 0
       }
     },
     WithdrawToOpskins: {
