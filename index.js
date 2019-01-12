@@ -34,7 +34,7 @@ var ExpressTrade = (() => {
     for(let _interface in schema){
       this[_interface] = {}
       for(let _method in schema[_interface]) this[_interface][_method] = (_data, _callback) => {
-        this.request([_interface, _method].join('/'), _data, _callback)
+        return this.request([_interface, _method].join('/'), _data, _callback)
       }
     }
 
@@ -131,65 +131,70 @@ var ExpressTrade = (() => {
 
     // API Request Function
     this.request = (_path, _data, _callback) => {
+      return new Promise((resolve, reject) => {
 
-      // Split Path to Interface & Method
-      var [ _interface, _method ] = _path.split('/')
+        // Split Path to Interface & Method
+        var [ _interface, _method ] = _path.split('/')
 
-      // Check for Interface & Method
-      if(!_interface || !_method || !this.schema[_interface] || !this.schema[_interface][_method]) return
+        // Check for Interface & Method
+        if(!_interface || !_method || !this.schema[_interface] || !this.schema[_interface][_method]) return reject(new Error('Invalid _interface or _method.'))
 
-      // Default Options for Requests
-      var options = {
-        auth: {
-          user: this.options.apikey
-        },
-        url: util.format(this.options.apiurl, _interface, _method)
-      }
-
-      // Check for Method (GET/POST)
-      if(!!this.schema[_interface][_method].method) options.method = this.schema[_interface][_method].method
-
-      // Create Data Object
-      if(typeof _data === 'function') _callback = _data, _data = {}
-      else if(typeof _data !== 'object') _data = {}
-      var data = Object.assign({}, (this.schema[_interface][_method].data || {}), _data)
-
-      // Check for required Data Fields
-      if(typeof this.schema[_interface][_method].fields === 'object'){
-
-        // Generate 2FA Code if required
-        if(this.schema[_interface][_method].fields.twofactor_code === 1) data.twofactor_code = this.generateToken()
-
-        // Stop Execution if required Data Field is missing
-        for(var field in this.schema[_interface][_method].fields) if(this.schema[_interface][_method].fields[field] === 1 && !data[field]){
-          console.log('expresstrade | ' + _path + ': Missing Input ' + field)
-          return
+        // Default Options for Requests
+        var options = {
+          auth: {
+            user: this.options.apikey
+          },
+          url: util.format(this.options.apiurl, _interface, _method)
         }
-      }
 
-      // Convert Data Object into required Format
-      if(Object.keys(data).length > 0){
+        // Check for Method (GET/POST)
+        if(!!this.schema[_interface][_method].method) options.method = this.schema[_interface][_method].method
 
-        // Convert Data Object into GET format
-        if(!options.method || options.method === 'GET') options.url = options.url + '?' + querystring.stringify(data)
+        // Create Data Object
+        if(typeof _data === 'function') _callback = _data, _data = {}
+        else if(typeof _data !== 'object') _data = {}
+        var data = Object.assign({}, (this.schema[_interface][_method].data || {}), _data)
 
-        // Convert Data Object into POST format
-        else options.form = data
-      }
+        // Check for required Data Fields
+        if(typeof this.schema[_interface][_method].fields === 'object'){
 
-      // Create Callback Function
-      var callback = _callback || this.schema[_interface][_method].callback || (() => {})
+          // Generate 2FA Code if required
+          if(this.schema[_interface][_method].fields.twofactor_code === 1) data.twofactor_code = this.generateToken()
 
-      // Perform Request
-      request(options, (error, response, body) => {
+          // Stop Execution if required Data Field is missing
+          for(var field in this.schema[_interface][_method].fields) if(this.schema[_interface][_method].fields[field] === 1 && !data[field]){
+            console.log('expresstrade | ' + _path + ': Missing Input ' + field)
+            return reject(new Error('Missing required expresstrade input.'))
+          }
+        }
 
-        // Convert Body to JSON
-        try {
-          body = JSON.parse(body)
-        } catch(e){}
+        // Convert Data Object into required Format
+        if(Object.keys(data).length > 0){
 
-        // Execute Callback Function
-        callback(error, body, response)
+          // Convert Data Object into GET format
+          if(!options.method || options.method === 'GET') options.url = options.url + '?' + querystring.stringify(data)
+
+          // Convert Data Object into POST format
+          else options.form = data
+        }
+
+        // Create Callback Function
+        var callback = _callback || this.schema[_interface][_method].callback || (() => {})
+
+        // Perform Request
+        request(options, (error, response, body) => {
+
+          // Convert Body to JSON
+          try {
+            body = JSON.parse(body)
+          } catch(e) {
+            return reject(e)
+          }
+
+          // Execute Callback Function
+          callback(error, body, response)
+          resolve(body);
+        })
       })
     }
 
